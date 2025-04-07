@@ -3,11 +3,12 @@
 client_id = "15bec6dd27c82c64aa1e66c353f71777"
 name = "shipping-cost-calculator"
 handle = "shipping-cost-calculator"
-application_url = "https://brothers-associate-accompanied-tu.trycloudflare.com"
+application_url = "https://kansas-seasonal-agreements-might.trycloudflare.com"
 embedded = true
 
 [build]
 include_config_on_deploy = true
+automatically_update_urls_on_dev = true
 
 [webhooks]
 api_version = "2025-04"
@@ -18,9 +19,9 @@ scopes = "write_products,write_shipping"
 
 [auth]
 redirect_urls = [
-  "https://brothers-associate-accompanied-tu.trycloudflare.com/auth/callback",
-  "https://brothers-associate-accompanied-tu.trycloudflare.com/auth/shopify/callback",
-  "https://brothers-associate-accompanied-tu.trycloudflare.com/api/auth/callback"
+  "https://kansas-seasonal-agreements-might.trycloudflare.com/auth/callback",
+  "https://kansas-seasonal-agreements-might.trycloudflare.com/auth/shopify/callback",
+  "https://kansas-seasonal-agreements-might.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]

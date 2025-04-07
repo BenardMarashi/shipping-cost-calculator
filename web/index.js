@@ -7,6 +7,10 @@ import serveStatic from "serve-static";
 import shopify from "./shopify.js";
 import productCreator from "./product-creator.js";
 import PrivacyWebhookHandlers from "./privacy.js";
+import { initializeCarriersTable } from "./models/carrier.js";
+import carriersRoutes from "./routes/carriers.js";
+import { registerCarrierService } from "./services/carrier.js";
+import { calculateShippingRates } from "./services/shipping.js";
 
 const PORT = parseInt(
   process.env.BACKEND_PORT || process.env.PORT || "3000",
@@ -19,6 +23,9 @@ const STATIC_PATH =
     : `${process.cwd()}/frontend/`;
 
 const app = express();
+
+// Initialize database tables
+initializeCarriersTable().catch(console.error);
 
 // Set up Shopify authentication and webhook handling
 app.get(shopify.config.auth.path, shopify.auth.begin());
@@ -39,7 +46,38 @@ app.use("/api/*", shopify.validateAuthenticatedSession());
 
 app.use(express.json());
 
-app.get("/api/products/count", async (_req, res) => {
+// API Routes
+app.use("/api/carriers", carriersRoutes);
+
+// Carrier Service endpoint - does not require authenticated session
+app.post("/carrier-service", express.json(), async (req, res) => {
+  try {
+    const rates = await calculateShippingRates(req.body);
+    res.json(rates);
+  } catch (error) {
+    console.error("Carrier service error:", error);
+    res.status(500).json({ 
+      success: false, 
+      error: "Failed to calculate shipping rates"
+    });
+  }
+});
+
+// Register carrier service after app installs
+app.get("/api/register-carrier", async (req, res) => {
+  try {
+    const result = await registerCarrierService(res.locals.shopify.session);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error registering carrier service:", error);
+    res.status(500).json({ 
+      success: false, 
+      error: "Failed to register carrier service" 
+    });
+  }
+});
+
+app.get("/api/products/count", async (req, res) => {
   const client = new shopify.api.clients.Graphql({
     session: res.locals.shopify.session,
   });
@@ -55,7 +93,7 @@ app.get("/api/products/count", async (_req, res) => {
   res.status(200).send({ count: countData.data.productsCount.count });
 });
 
-app.post("/api/products", async (_req, res) => {
+app.post("/api/products", async (req, res) => {
   let status = 200;
   let error = null;
 
@@ -72,7 +110,8 @@ app.post("/api/products", async (_req, res) => {
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
-app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
+// APPROACH 2: Define a separate middleware function
+function serveIndexHtml(req, res) {
   return res
     .status(200)
     .set("Content-Type", "text/html")
@@ -81,6 +120,11 @@ app.use("/*", shopify.ensureInstalledOnShop(), async (_req, res, _next) => {
         .toString()
         .replace("%VITE_SHOPIFY_API_KEY%", process.env.SHOPIFY_API_KEY || "")
     );
-});
+}
 
-app.listen(PORT);
+// Use the separated middleware function
+app.use("/*", shopify.ensureInstalledOnShop(), serveIndexHtml);
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
