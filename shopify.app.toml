@@ -1,3 +1,27 @@
-# This file stores configurations for your Shopify app.
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
+client_id = "15bec6dd27c82c64aa1e66c353f71777"
+name = "shipping-cost-calculator"
+handle = "shipping-cost-calculator"
+application_url = "https://brothers-associate-accompanied-tu.trycloudflare.com"
+embedded = true
+
+[build]
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2025-04"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://brothers-associate-accompanied-tu.trycloudflare.com/auth/callback",
+  "https://brothers-associate-accompanied-tu.trycloudflare.com/auth/shopify/callback",
+  "https://brothers-associate-accompanied-tu.trycloudflare.com/api/auth/callback"
+]
+
+[pos]
+embedded = false
