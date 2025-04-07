@@ -30,3 +30,8 @@ web/database.sqlite
 # Ignore shopify files created during app dev
 .shopify/*
 .shopify.lock
+
+# Ignore lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
