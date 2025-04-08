@@ -3,7 +3,7 @@
 client_id = "15bec6dd27c82c64aa1e66c353f71777"
 name = "shipping-cost-calculator"
 handle = "shipping-cost-calculator"
-application_url = "https://shall-findarticles-adjustments-wedding.trycloudflare.com"
+application_url = "https://sharp-why-films-weekend.trycloudflare.com"
 embedded = true
 
 [build]
@@ -19,9 +19,9 @@ scopes = "write_products,write_shipping"
 
 [auth]
 redirect_urls = [
-  "https://shall-findarticles-adjustments-wedding.trycloudflare.com/auth/callback",
-  "https://shall-findarticles-adjustments-wedding.trycloudflare.com/auth/shopify/callback",
-  "https://shall-findarticles-adjustments-wedding.trycloudflare.com/api/auth/callback"
+  "https://sharp-why-films-weekend.trycloudflare.com/auth/callback",
+  "https://sharp-why-films-weekend.trycloudflare.com/auth/shopify/callback",
+  "https://sharp-why-films-weekend.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]
