@@ -1,4 +1,4 @@
-import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
+import { Routes as ReactRouterRoutes, Route, Navigate } from "react-router-dom";
 
 /**
  * File-based routing.
@@ -14,6 +14,9 @@ export default function Routes({ pages }) {
 
   return (
     <ReactRouterRoutes>
+      {/* Default root path redirects to Carriers page */}
+      <Route path="/" element={<Navigate to="/carriers" replace />} />
+      
       {routeComponents}
       <Route path="*" element={<NotFound />} />
     </ReactRouterRoutes>

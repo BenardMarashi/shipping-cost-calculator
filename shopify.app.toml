@@ -3,7 +3,7 @@
 client_id = "15bec6dd27c82c64aa1e66c353f71777"
 name = "shipping-cost-calculator"
 handle = "shipping-cost-calculator"
-application_url = "https://kansas-seasonal-agreements-might.trycloudflare.com"
+application_url = "https://regional-hide-ts-mostly.trycloudflare.com"
 embedded = true
 
 [build]
@@ -19,9 +19,9 @@ scopes = "write_products,write_shipping"
 
 [auth]
 redirect_urls = [
-  "https://kansas-seasonal-agreements-might.trycloudflare.com/auth/callback",
-  "https://kansas-seasonal-agreements-might.trycloudflare.com/auth/shopify/callback",
-  "https://kansas-seasonal-agreements-might.trycloudflare.com/api/auth/callback"
+  "https://regional-hide-ts-mostly.trycloudflare.com/auth/callback",
+  "https://regional-hide-ts-mostly.trycloudflare.com/auth/shopify/callback",
+  "https://regional-hide-ts-mostly.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]

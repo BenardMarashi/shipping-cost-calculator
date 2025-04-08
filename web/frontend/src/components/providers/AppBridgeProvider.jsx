@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Provider } from "@shopify/app-bridge-react";
 import { Banner, Layout, Page } from "@shopify/polaris";
@@ -11,6 +11,34 @@ import { Banner, Layout, Page } from "@shopify/polaris";
 export function AppBridgeProvider({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [appBridgeConfig, setAppBridgeConfig] = useState(null);
+  
+  // Get the host and other query params from the URL
+  const query = new URLSearchParams(location.search);
+  const host = query.get("host");
+
+  useEffect(() => {
+    if (!host) {
+      console.warn("No host found in query params");
+      return;
+    }
+
+    const apiKey = window.shopifyApiKey || "15bec6dd27c82c64aa1e66c353f71777";
+    
+    if (!apiKey) {
+      console.error("No API key found");
+      return;
+    }
+
+    console.log("Initializing AppBridge with:", { host, apiKey });
+    
+    setAppBridgeConfig({
+      host,
+      apiKey,
+      forceRedirect: true,
+    });
+  }, [host]);
+
   const history = useMemo(
     () => ({
       replace: (path) => {
@@ -24,48 +52,10 @@ export function AppBridgeProvider({ children }) {
     () => ({ history, location }),
     [history, location]
   );
-
-  // Get the host from the query parameters
-  const query = new URLSearchParams(location.search);
-  const host = query.get("host");
-
-  const [appBridgeConfig, setAppBridgeConfig] = useState(null);
-
-  // Create a new app bridge config when the host changes
-  useMemo(() => {
-    if (!host) {
-      return;
-    }
-
-    const apiKey = window.shopifyApiKey || import.meta.env.VITE_SHOPIFY_API_KEY || "";
-
-    if (apiKey === "") {
-      console.error("Shopify API key is missing");
-      return;
-    }
-
-    setAppBridgeConfig({
-      host,
-      apiKey,
-      forceRedirect: true,
-    });
-  }, [host]);
-
+  
   if (!appBridgeConfig) {
-    return (
-      <Page narrowWidth>
-        <Layout>
-          <Layout.Section>
-            <div style={{ marginTop: "100px" }}>
-              <Banner title="Missing Shopify parameters" status="critical">
-                Your app needs to be embedded in a Shopify admin page. Either the API key 
-                or the host parameter is missing or invalid.
-              </Banner>
-            </div>
-          </Layout.Section>
-        </Layout>
-      </Page>
-    );
+    console.log("App Bridge config not ready yet");
+    return null; // Return null instead of showing an error to avoid flickering during initialization
   }
 
   return (

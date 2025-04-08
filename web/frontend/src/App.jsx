@@ -8,10 +8,15 @@ import {
   PolarisProvider,
 } from "./components";
 
+// Check if we're in an iframe (embedded mode)
+const isEmbedded = window.self !== window.top;
+
 export default function App() {
   // Any .jsx files in /pages will become a route
   const pages = import.meta.glob("./pages/**/!(*.test.[jt]sx)*.([jt]sx)", { eager: true });
 
+  console.log("App initialized, embedded mode:", isEmbedded);
+  
   return (
     <PolarisProvider>
       <BrowserRouter>

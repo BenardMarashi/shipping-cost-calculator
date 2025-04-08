@@ -110,19 +110,26 @@ app.post("/api/products", async (req, res) => {
 app.use(shopify.cspHeaders());
 app.use(serveStatic(STATIC_PATH, { index: false }));
 
-// APPROACH 2: Define a separate middleware function
+// IMPROVED: Better handling of embedded app parameters
 function serveIndexHtml(req, res) {
+  // Get the full URL including all query parameters
+  const url = req.originalUrl;
+  const shopifyHost = req.query.host;
+  
+  console.log("Serving index.html for URL:", url);
+  console.log("Shopify Host:", shopifyHost);
+  
   return res
     .status(200)
     .set("Content-Type", "text/html")
     .send(
       readFileSync(join(STATIC_PATH, "index.html"))
         .toString()
-        .replace("%VITE_SHOPIFY_API_KEY%", process.env.SHOPIFY_API_KEY || "")
+        .replace("%VITE_SHOPIFY_API_KEY%", process.env.SHOPIFY_API_KEY || "15bec6dd27c82c64aa1e66c353f71777")
     );
 }
 
-// Use the separated middleware function
+// Use the improved middleware function
 app.use("/*", shopify.ensureInstalledOnShop(), serveIndexHtml);
 
 app.listen(PORT, () => {

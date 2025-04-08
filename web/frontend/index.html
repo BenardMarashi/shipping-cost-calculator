@@ -10,8 +10,18 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
-      // This is necessary for Shopify's App Bridge
+      // Set Shopify API key globally
       window.shopifyApiKey = "%VITE_SHOPIFY_API_KEY%";
+      
+      // Debug info for embedded app
+      console.log("Window location:", window.location.href);
+      console.log("API Key:", window.shopifyApiKey);
+      console.log("Is in iframe:", window.self !== window.top);
+      
+      // Parse URL parameters
+      const params = new URLSearchParams(window.location.search);
+      window.shopifyHost = params.get("host");
+      console.log("Shopify Host:", window.shopifyHost);
     </script>
   </body>
 </html>
