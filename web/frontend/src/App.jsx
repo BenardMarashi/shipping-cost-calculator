@@ -1,3 +1,4 @@
+// web/frontend/src/App.jsx - Make sure the Carriers component is imported and routed
 import React from 'react';
 import { BrowserRouter } from "react-router-dom";
 import { NavigationMenu } from "@shopify/app-bridge-react";
@@ -8,14 +9,9 @@ import {
   PolarisProvider,
 } from "./components";
 
-// Check if we're in an iframe (embedded mode)
-const isEmbedded = window.self !== window.top;
-
 export default function App() {
   // Any .jsx files in /pages will become a route
   const pages = import.meta.glob("./pages/**/!(*.test.[jt]sx)*.([jt]sx)", { eager: true });
-
-  console.log("App initialized, embedded mode:", isEmbedded);
   
   return (
     <PolarisProvider>
@@ -27,6 +23,10 @@ export default function App() {
                 {
                   label: "Carriers",
                   destination: "/carriers",
+                },
+                {
+                  label: "Register Service",
+                  destination: "/register",
                 },
               ]}
             />
