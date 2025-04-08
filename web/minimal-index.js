@@ -1,4 +1,4 @@
-// web/index.js
+// web/minimal-index.js - A minimal Express server
 import express from "express";
 import dotenv from 'dotenv';
 import { join } from "path";
@@ -6,8 +6,6 @@ import { readFileSync } from "fs";
 
 // Load environment variables
 dotenv.config();
-
-import shopify from "./shopify.js";
 
 const PORT = parseInt(process.env.PORT || "8081", 10);
 const STATIC_PATH = `${process.cwd()}/frontend/`;
@@ -17,6 +15,11 @@ const app = express();
 // Health check route
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
+});
+
+// Basic API endpoint
+app.get('/api/hello', (req, res) => {
+  res.json({ message: 'Hello World' });
 });
 
 // Root path
@@ -30,7 +33,7 @@ app.get('/', (req, res) => {
     );
 });
 
-// Fallback route for SPA
+// Fallback route - Very simple, no regex patterns
 app.get('*', (req, res) => {
   console.log(`Serving index.html for path: ${req.originalUrl}`);
   
