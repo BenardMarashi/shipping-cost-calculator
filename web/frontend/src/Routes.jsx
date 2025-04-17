@@ -33,6 +33,8 @@ function NotFound() {
 }
 
 function useRoutes(pages) {
+  console.log("Available pages:", Object.keys(pages));
+  
   const routes = Object.keys(pages)
     .map((key) => {
       let path = key
@@ -41,12 +43,10 @@ function useRoutes(pages) {
         .replace(/\/index$/i, "/")
         .replace(/\b[A-Z]/, (match) => match.toLowerCase());
 
+      console.log(`Converting ${key} to route: ${path}`);
+      
       if (path.endsWith("/")) {
         path = path.substring(0, path.length - 1);
-      }
-
-      if (path === "/home") {
-        path = "/";
       }
 
       return {
